@@ -10,7 +10,13 @@ internal class Program
     {
         using var connection = new SqlConnection(connectionString);
         connection.Open();
-        Console.WriteLine("Connection successfull!");
+
+        using var command = connection.CreateCommand();
+
+        command.CommandText = "SELECT @@VERSION";
+
+        string version = command.ExecuteScalar().ToString();
+        Console.WriteLine($"Connection successfull to {version}!");
         Console.ReadKey();
     }
 }
