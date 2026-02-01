@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using FlashcardsRevisited.Services;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 namespace FlashcardsRevisited;
@@ -8,15 +9,11 @@ internal class Program
 
     static void Main(string[] args)
     {
-        using var connection = new SqlConnection(connectionString);
-        connection.Open();
+        DatabaseManager databaseManager = new();
 
-        using var command = connection.CreateCommand();
+        databaseManager.CreateTable(connectionString);
 
-        command.CommandText = "SELECT @@VERSION";
-
-        string version = command.ExecuteScalar().ToString();
-        Console.WriteLine($"Connection successfull to {version}!");
+        Console.WriteLine($"Connection successfull!");
         Console.ReadKey();
     }
 }
