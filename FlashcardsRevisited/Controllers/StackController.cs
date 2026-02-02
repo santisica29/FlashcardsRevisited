@@ -14,7 +14,7 @@ internal class StackController
 
         connection.Open();
 
-        var sql = $"INSERT INTO Stack (StackId, StackName, Description, CreatedDate) VALUES (@StackId, @StackName, @Description, @CreatedDate)";
+        var sql = @"INSERT INTO Stack (StackId, StackName, Description, CreatedDate) VALUES (@StackId, @StackName, @Description, @CreatedDate)";
 
         return connection.Execute(sql, new
         {
@@ -25,5 +25,51 @@ internal class StackController
         });
     }
 
-    internal int Update()
+    internal int Update(StackDeck newStackDeck)
+    {
+        using var connection = new SqlConnection(connectionString);
+        connection.Open();
+
+        var sql = @"UPDATE Stack 
+                    SET StackName = @NewStackName, Description = @NewDescription
+                    WHERE StackId = @StackId";
+
+        return connection.Execute(sql, new
+        {
+            newStackDeck.StackName,
+            newStackDeck.Description,
+            newStackDeck.StackId,
+        });
+    }
+
+    internal int Delete(int id)
+    {
+        using var connection = new SqlConnection(connectionString);
+        connection.Open();
+
+        var sql = @"DELETE FROM Stack WHERE StackId = @StackId";
+
+        return connection.Execute(sql, id);
+    }
+
+    internal StackDeck? GetById(int id)
+    {
+        using var connection = new SqlConnection(connectionString);
+        connection.Open();
+
+        var sql = @"SELECT * FROM Stack
+                    WHERE StackId = @StackId";
+
+        return connection.QuerySingleOrDefault<StackDeck>(sql, id);
+    }
+
+    internal List<StackDeck> GetAll()
+    {
+        using var connection = new SqlConnection(connectionString);
+        connection.Open();
+
+        var sql = "SELECT * FROM Stack";
+
+        return connection.Query<StackDeck>(sql).ToList();
+    }
 }
