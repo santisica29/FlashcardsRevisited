@@ -1,5 +1,5 @@
 ﻿namespace FlashcardsRevisited.Models;
-internal class Stack
+internal class StackDeck
 {
     public int StackId { get; set; }
     public string StackName { get; set; }
