@@ -10,15 +10,15 @@ internal class DatabaseManager
 
         connection.Open();
 
-        var sqlStack = @"IF OBJECT_ID('dbo.Stack', 'U') IS NULL
+        var sqlStack = @"IF OBJECT_ID('dbo.Stacks', 'U') IS NULL
             BEGIN
-                CREATE TABLE Stack (
+                CREATE TABLE Stacks (
                     StackId INT IDENTITY NOT NULL,
                     StackName VARCHAR(25) NOT NULL,
                     Description VARCHAR(255),
                     CreatedDate DATE,
 
-                    CONSTRAINT PK_Stack PRIMARY KEY (StackId),
+                    CONSTRAINT PK_Stacks PRIMARY KEY (StackId),
                     CONSTRAINT UQ_StackName UNIQUE (StackName)
                 );
             END";
@@ -28,14 +28,14 @@ internal class DatabaseManager
         var sqlFlashcards = @"IF OBJECT_ID('dbo.Flashcards', 'U') IS NULL
             BEGIN
                 CREATE TABLE Flashcards (
-                    FlashcardsId INT IDENTITY NOT NULL,
+                    FlashcardId INT IDENTITY NOT NULL,
                     Front VARCHAR NOT NULL,
                     Back VARCHAR NOT NULL,
                     StackId INT NOT NULL,
 
-                    CONSTRAINT PK_Flashcards PRIMARY KEY (FlashcardsId),
+                    CONSTRAINT PK_Flashcards PRIMARY KEY (FlashcardId),
                     CONSTRAINT FK_Flashcards_StackId FOREIGN KEY (StackId)
-                        REFERENCES Stack(StackId)
+                        REFERENCES Stacks(StackId)
                         ON DELETE CASCADE
                     );
             END";

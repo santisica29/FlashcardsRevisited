@@ -14,7 +14,7 @@ internal class StackController
 
         connection.Open();
 
-        var sql = @"INSERT INTO Stack (StackId, StackName, Description, CreatedDate) VALUES (@StackId, @StackName, @Description, @CreatedDate)";
+        var sql = @"INSERT INTO Stacks (StackId, StackName, Description, CreatedDate) VALUES (@StackId, @StackName, @Description, @CreatedDate)";
 
         return connection.Execute(sql, new
         {
@@ -30,7 +30,7 @@ internal class StackController
         using var connection = new SqlConnection(connectionString);
         connection.Open();
 
-        var sql = @"UPDATE Stack 
+        var sql = @"UPDATE Stacks 
                     SET StackName = @NewStackName, Description = @NewDescription
                     WHERE StackId = @StackId";
 
@@ -47,7 +47,7 @@ internal class StackController
         using var connection = new SqlConnection(connectionString);
         connection.Open();
 
-        var sql = @"DELETE FROM Stack WHERE StackId = @StackId";
+        var sql = @"DELETE FROM Stacks WHERE StackId = @StackId";
 
         return connection.Execute(sql, id);
     }
@@ -57,7 +57,7 @@ internal class StackController
         using var connection = new SqlConnection(connectionString);
         connection.Open();
 
-        var sql = @"SELECT * FROM Stack
+        var sql = @"SELECT * FROM Stacks
                     WHERE StackId = @StackId";
 
         return connection.QuerySingleOrDefault<StackDeck>(sql, id);
@@ -68,7 +68,7 @@ internal class StackController
         using var connection = new SqlConnection(connectionString);
         connection.Open();
 
-        var sql = "SELECT * FROM Stack";
+        var sql = "SELECT * FROM Stacks";
 
         return connection.Query<StackDeck>(sql).ToList();
     }
