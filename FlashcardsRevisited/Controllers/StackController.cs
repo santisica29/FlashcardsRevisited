@@ -14,11 +14,10 @@ internal class StackController
 
         connection.Open();
 
-        var sql = @"INSERT INTO Stacks (StackId, StackName, Description, CreatedDate) VALUES (@StackId, @StackName, @Description, @CreatedDate)";
+        var sql = @"INSERT INTO Stacks (StackName, Description, CreatedDate) VALUES (@StackName, @Description, @CreatedDate)";
 
         return connection.Execute(sql, new
         {
-            stack.StackId,
             stack.StackName,
             stack.Description,
             stack.CreatedDate,

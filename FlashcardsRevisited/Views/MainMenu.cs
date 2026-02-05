@@ -25,9 +25,9 @@
                         var stackMenu = new StacksMenu();
                         stackMenu.MainMenu();
                         break;
-                    case "f":
-                        FlashcardsMenu();
-                        break;
+                    //case "f":
+                    //    FlashcardsMenu();
+                    //    break;
                     //case "x":
                     //    StudyAreaMenu();
                     //    break;

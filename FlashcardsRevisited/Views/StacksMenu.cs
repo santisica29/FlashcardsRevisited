@@ -1,4 +1,5 @@
 ﻿using FlashcardsRevisited.Controllers;
+using FlashcardsRevisited.Models;
 
 namespace FlashcardsRevisited.Views;
 
@@ -53,7 +54,27 @@ internal class StacksMenu
 
     private void ProcessCreateStack()
     {
-        throw new NotImplementedException();
+        Console.WriteLine("Create a new stack.");
+        Console.WriteLine("------------------");
+        Console.WriteLine("Name (mandatory):");
+        string nameInput = Console.ReadLine().Trim().ToLower();
+
+        Console.WriteLine("Description (optional):");
+        string descriptionInput = Console.ReadLine().Trim().ToLower();
+
+        StackDeck newStack = new()
+        {
+            StackName = nameInput,
+            Description = descriptionInput,
+            CreatedDate = DateTime.Now,
+        };
+
+        int affectedRows = _stackController.Add(newStack);
+
+        if (affectedRows > 0)
+            Console.WriteLine("New Stack created!");
+        else
+            Console.WriteLine("Couldn't create the stack");
     }
 
     private void ProcessViewStacks()
@@ -66,6 +87,10 @@ internal class StacksMenu
             return;
         }
 
-        TableVisualisation.ShowTable(listOfStacks);
+        foreach (var item in listOfStacks)
+        {
+            Console.WriteLine($"{item.StackId} - {item.StackName} - {item.Description} - {item.CreatedDate}");
+        }
+        //TableVisualisation.ShowTable(listOfStacks);
     }
 }
