@@ -49,9 +49,17 @@ internal class StacksMenu
         Console.WriteLine("Type the ID of the Stack you want to delete");
         string idSelected = Console.ReadLine().Trim().ToLower();
 
-        int idAsInt = Convert.ToInt32(idSelected);
+        int id = Convert.ToInt32(idSelected);
 
-        StackDeck? stackToDelete = _stackController.GetById(idAsInt);
+        StackDeck? stackToDelete = _stackController.GetById(id);
+
+        if (stackToDelete == null)
+        {
+            Console.WriteLine("No Stack found with that id.");
+            Console.ReadKey();
+            ProcessDeleteStack();
+            return;
+        }
 
         Console.WriteLine($"Are you sure you want to delete {stackToDelete.StackName}? (y/n)");
         string confirmationInput = Console.ReadLine().Trim().ToLower();
@@ -75,7 +83,63 @@ internal class StacksMenu
 
     private void ProcessUpdateStack()
     {
-        throw new NotImplementedException();
+        ProcessViewStacks();
+
+        Console.WriteLine("Type the ID of the Stack you want to update");
+        string idSelected = Console.ReadLine().Trim().ToLower();
+
+        int id = int.Parse(idSelected);
+
+        StackDeck? stackToUpdate = _stackController.GetById(id);
+
+        if (stackToUpdate == null)
+        {
+            Console.WriteLine("No Stack found with that id. Try Again");
+            Console.ReadKey();
+            ProcessUpdateStack();
+            return;
+        }
+
+        bool updating = true;
+
+        while (updating)
+        {
+            Console.WriteLine("Select which part you want to update.");
+            Console.WriteLine("Press 1 to update the name");
+            Console.WriteLine("Press 2 to update the description");
+            Console.WriteLine("Press s to stop updating");
+            Console.WriteLine("Press 0 to go back");
+
+            var cmd = Console.ReadLine().Trim().ToLower();
+
+            switch (cmd)
+            {
+                case "1":
+                    Console.WriteLine("Type the new name:");
+                    string newName = Console.ReadLine();
+                    stackToUpdate.StackName = newName;
+                    break;
+                case "2":
+                    Console.WriteLine("Type the new name:");
+                    string newDescription = Console.ReadLine();
+                    stackToUpdate.Description = newDescription;
+                    break;
+                case "s":
+                    updating = false;
+                    break;
+                case "0":
+                    updating = false;
+                    MainMenu();
+                    return;
+            }
+        }
+
+        int rowsAffected = _stackController.Update(stackToUpdate);
+
+        if (rowsAffected > 0)
+            Console.WriteLine($"Stack with Id of {stackToUpdate.StackId} and name of {stackToUpdate.StackName} was updated.");
+        else
+            Console.WriteLine("Couldn't update the stack.");
     }
 
     private void ProcessCreateStack()

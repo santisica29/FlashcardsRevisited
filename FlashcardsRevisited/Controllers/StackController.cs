@@ -35,9 +35,9 @@ internal class StackController
 
         return connection.Execute(sql, new
         {
-            newStackDeck.StackName,
-            newStackDeck.Description,
-            newStackDeck.StackId,
+            NewStackName = newStackDeck.StackName,
+            NewDescription = newStackDeck.Description,
+            StackId = newStackDeck.StackId,
         });
     }
 
