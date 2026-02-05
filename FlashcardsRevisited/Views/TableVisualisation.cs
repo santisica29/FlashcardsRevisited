@@ -1,11 +1,18 @@
-﻿using FlashcardsRevisited.Models;
+﻿using ConsoleTableExt;
 
 namespace FlashcardsRevisited.Views;
 
 internal class TableVisualisation
 {
-    internal static void ShowTable(List<StackDeck> listOfStacks)
+    internal static void ShowTable<T>(List<T> tableData, string title) where T : class
     {
-        throw new NotImplementedException();
+        Console.WriteLine("\n\n");
+
+        ConsoleTableBuilder
+            .From(tableData)
+            .WithTitle(title, ConsoleColor.DarkGreen)
+            .ExportAndWriteLine();
+
+        Console.WriteLine("\n\n");
     }
 }

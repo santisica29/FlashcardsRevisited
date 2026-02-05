@@ -27,7 +27,7 @@ internal class FlashcardController
 
         var sql = "SELECTION * FROM Flashcards WHERE FlashcardId = @FlashcardId";
 
-        return connection.QuerySingleOrDefault<Flashcard>(sql, id);
+        return connection.QuerySingleOrDefault<Flashcard>(sql, new {FlashcardId = id});
     }
 
     internal int Add(Flashcard flashcard)

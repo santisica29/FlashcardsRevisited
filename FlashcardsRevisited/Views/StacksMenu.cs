@@ -44,7 +44,33 @@ internal class StacksMenu
 
     internal void ProcessDeleteStack()
     {
-        throw new NotImplementedException();
+        ProcessViewStacks();
+
+        Console.WriteLine("Type the ID of the Stack you want to delete");
+        string idSelected = Console.ReadLine().Trim().ToLower();
+
+        int idAsInt = Convert.ToInt32(idSelected);
+
+        StackDeck? stackToDelete = _stackController.GetById(idAsInt);
+
+        Console.WriteLine($"Are you sure you want to delete {stackToDelete.StackName}? (y/n)");
+        string confirmationInput = Console.ReadLine().Trim().ToLower();
+
+        if (confirmationInput != "y")
+        {
+            Console.WriteLine("Deletion canceled.");
+            Console.ReadKey();
+            return;
+        }
+        
+        int rowsAffected = _stackController.Delete(stackToDelete.StackId);
+
+        if (rowsAffected > 0)
+            Console.WriteLine("Stack deleted");
+        else
+            Console.WriteLine("Couldn't delete the Stack");
+
+        Console.ReadKey();
     }
 
     private void ProcessUpdateStack()
@@ -82,15 +108,8 @@ internal class StacksMenu
         var listOfStacks = _stackController.GetAll();
 
         if (listOfStacks.Count == 0)
-        {
             Console.WriteLine("No stacks found.");
-            return;
-        }
-
-        foreach (var item in listOfStacks)
-        {
-            Console.WriteLine($"{item.StackId} - {item.StackName} - {item.Description} - {item.CreatedDate}");
-        }
-        //TableVisualisation.ShowTable(listOfStacks);
+        else
+            TableVisualisation.ShowTable(listOfStacks, "Stacks");
     }
 }

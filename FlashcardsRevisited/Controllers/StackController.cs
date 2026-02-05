@@ -48,7 +48,7 @@ internal class StackController
 
         var sql = @"DELETE FROM Stacks WHERE StackId = @StackId";
 
-        return connection.Execute(sql, id);
+        return connection.Execute(sql, new {StackId = id});
     }
 
     internal StackDeck? GetById(int id)
@@ -59,7 +59,10 @@ internal class StackController
         var sql = @"SELECT * FROM Stacks
                     WHERE StackId = @StackId";
 
-        return connection.QuerySingleOrDefault<StackDeck>(sql, id);
+        return connection.QuerySingleOrDefault<StackDeck>(sql, new
+        {
+            StackId = id,
+        });
     }
 
     internal List<StackDeck> GetAll()
