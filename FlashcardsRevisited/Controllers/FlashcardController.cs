@@ -27,9 +27,13 @@ internal class FlashcardController
             dtoList.Add(
                 new FlashcardDTO
                 {
-
+                    FlashcardId = item.FlashcardId,
+                    Front = item.Front,
+                    Back = item.Back,
                 });
         }
+
+        return dtoList;
     }
 
     internal Flashcard? GetById(int id)
