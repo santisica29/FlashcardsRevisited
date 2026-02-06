@@ -8,7 +8,7 @@ namespace FlashcardsRevisited.Controllers;
 internal class FlashcardController
 {
     static string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
-    internal List<Flashcard> GetAll()
+    internal List<FlashcardDTO>? GetAll()
     {
         using var connection = new SqlConnection(connectionString);
 
@@ -16,7 +16,20 @@ internal class FlashcardController
 
         var sql = "SELECTION * FROM Flashcards";
 
-        return connection.Query<Flashcard>(sql).ToList();
+        var list = connection.Query<Flashcard>(sql).ToList();
+
+        if (list.Count == 0) return null;
+
+        var dtoList = new List<FlashcardDTO>();
+
+        foreach (var item in list)
+        {
+            dtoList.Add(
+                new FlashcardDTO
+                {
+
+                });
+        }
     }
 
     internal Flashcard? GetById(int id)
@@ -27,7 +40,7 @@ internal class FlashcardController
 
         var sql = "SELECTION * FROM Flashcards WHERE FlashcardId = @FlashcardId";
 
-        return connection.QuerySingleOrDefault<Flashcard>(sql, new {FlashcardId = id});
+        return connection.QuerySingleOrDefault<Flashcard>(sql, new { FlashcardId = id });
     }
 
     internal int Add(Flashcard flashcard)
