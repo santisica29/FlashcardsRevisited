@@ -1,8 +1,19 @@
-﻿namespace FlashcardsRevisited.Views
+﻿using FlashcardsRevisited.Controllers;
+
+namespace FlashcardsRevisited.Views
 {
     internal class MainMenu
     {
-        private readonly StacksMenu _stacksMenu = new();
+        private readonly StackController _stackController;
+
+        private readonly StacksMenu _stacksMenu;
+
+        public MainMenu()
+        {
+            _stackController = new StackController();
+            _stacksMenu = new StacksMenu(_stackController);
+        }
+
         internal void StartingMenu()
         {
             bool closeApp = false;

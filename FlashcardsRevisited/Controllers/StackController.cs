@@ -65,6 +65,17 @@ internal class StackController
         });
     }
 
+    internal StackDeck? GetByName(string name)
+    {
+        using var connection = new SqlConnection(connectionString);
+        connection.Open();
+
+        var sql = @"SELECT * FROM Stacks
+                    WHERE StackName = @Name";
+
+        return connection.QuerySingleOrDefault<StackDeck>(sql, new {Name = name});
+    }
+
     internal List<StackDeck> GetAll()
     {
         using var connection = new SqlConnection(connectionString);

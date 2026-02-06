@@ -5,7 +5,12 @@ namespace FlashcardsRevisited.Views;
 
 internal class StacksMenu
 {
-    private StackController _stackController = new();
+    private StackController _stackController;
+
+    public StacksMenu(StackController stackController)
+    {
+        _stackController = stackController;
+    }
 
     internal void MainMenu()
     {

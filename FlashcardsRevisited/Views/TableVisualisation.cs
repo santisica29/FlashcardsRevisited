@@ -4,7 +4,7 @@ namespace FlashcardsRevisited.Views;
 
 internal class TableVisualisation
 {
-    internal static void ShowTable<T>(List<T> tableData, string title) where T : class
+    internal static void ShowTable<T>(List<T> tableData, string title = "Stacks") where T : class
     {
         Console.WriteLine("\n\n");
 
