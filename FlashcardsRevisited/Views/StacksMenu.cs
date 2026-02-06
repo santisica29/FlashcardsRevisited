@@ -14,26 +14,26 @@ internal class StacksMenu
         while (!closeStackMenu)
         {
             Console.WriteLine("Stacks Menu.");
-            Console.WriteLine("View All (v)");
-            Console.WriteLine("Create (c)");
-            Console.WriteLine("Update (u)");
-            Console.WriteLine("Delete (d)");
-            Console.WriteLine("Go Back (0)");
+            Console.WriteLine("1 - View All");
+            Console.WriteLine("2 - Create");
+            Console.WriteLine("3 - Update");
+            Console.WriteLine("4 - Delete");
+            Console.WriteLine("0 - Go Back");
 
             string userInput = Console.ReadLine().Trim().ToLower();
 
             switch (userInput)
             {
-                case "v":
+                case "1":
                     ProcessViewStacks();
                     break;
-                case "c":
+                case "2":
                     ProcessCreateStack();
                     break;
-                case "u":
+                case "3":
                     ProcessUpdateStack();
                     break;
-                case "d":
+                case "4":
                     ProcessDeleteStack();
                     break;
                 case "0":

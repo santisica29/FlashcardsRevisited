@@ -2,7 +2,7 @@
 {
     internal class MainMenu
     {
-        StacksMenu sm = new StacksMenu();
+        private readonly StacksMenu _stacksMenu = new();
         internal void StartingMenu()
         {
             bool closeApp = false;
@@ -23,7 +23,7 @@
                 switch (commandInput)
                 {
                     case "s":
-                        sm.MainMenu();
+                        _stacksMenu.MainMenu();
                         break;
                     //case "f":
                     //    FlashcardsMenu();
