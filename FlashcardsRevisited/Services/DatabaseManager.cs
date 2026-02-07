@@ -50,7 +50,7 @@ internal class DatabaseManager
                     DateOfSession DATE NOT NULL,
                     StackId INT NOT NULL,
 
-                    CONSTRAINT PK_StudyArea PRIMARY KEY (StudySessionId)
+                    CONSTRAINT PK_StudyArea PRIMARY KEY (StudySessionId),
                     CONSTRAINT FK_StudyArea_StackId FOREIGN KEY (StackId)
                         REFERENCES Stacks(StackId)
                         ON DELETE CASCADE

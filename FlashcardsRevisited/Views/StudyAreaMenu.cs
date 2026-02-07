@@ -18,26 +18,31 @@ internal class StudyAreaMenu
     {
         _currentStack = ChooseCurrentStack();
 
-        Console.WriteLine("Study Area");
-        Console.WriteLine("0 - Go back");
-        Console.WriteLine("1 - Start study session");
-        Console.WriteLine("2 - View study sessions with this stack");
-        string userChoice = Console.ReadLine().Trim().ToLower();
-
-        switch (userChoice)
+        bool closeApp = false;
+        while (!closeApp)
         {
-            case "0":
-                return;
-            case "1":
-                ProcessStartStudySession();
-                break;
-            case "2":
-                ProcessViewStudySessions();
-                break;
-        }
+            Console.WriteLine("Study Area");
+            Console.WriteLine("0 - Go back");
+            Console.WriteLine("1 - Start study session");
+            Console.WriteLine("2 - View study sessions with this stack");
+            string userChoice = Console.ReadLine().Trim().ToLower();
+
+            switch (userChoice)
+            {
+                case "0":
+                    closeApp = true;
+                    break;
+                case "1":
+                    ProcessStartStudySession();
+                    break;
+                case "2":
+                    ProcessViewStudySessions();
+                    break;
+            }
+        }  
     }
 
-    private void ProcessViewStudySessions()
+    internal void ProcessStartStudySession()
     {
         int score = 0;
         var flashcardList = _flashcardController.GetFlashcardsFromStack(_currentStack.StackId);
@@ -63,6 +68,7 @@ internal class StudyAreaMenu
                 Console.WriteLine("Incorrect answer.");
             }
 
+            Console.WriteLine($"Final score {score} pts");
             Console.ReadKey();
         }
 
@@ -70,18 +76,18 @@ internal class StudyAreaMenu
         {
             StackId = _currentStack.StackId,
             Score = score,
-            Date = DateTime.Now,
+            DateOfSession = DateTime.Now,
         };
 
         var affectedRows = _studySessionController.Add(newSession);
 
-        if (affectedRows.Count > 0)
+        if (affectedRows > 0)
             Console.WriteLine("Study session added correctly!");
         else
             Console.WriteLine("Couldn't saved study session");
     }
 
-    private void ProcessStartStudySession()
+    internal void ProcessViewStudySessions()
     {
         throw new NotImplementedException();
     }
