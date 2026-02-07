@@ -29,8 +29,8 @@ internal class DatabaseManager
             BEGIN
                 CREATE TABLE Flashcards (
                     FlashcardId INT IDENTITY NOT NULL,
-                    Front VARCHAR NOT NULL,
-                    Back VARCHAR NOT NULL,
+                    Front VARCHAR(255) NOT NULL,
+                    Back VARCHAR(255) NOT NULL,
                     StackId INT NOT NULL,
 
                     CONSTRAINT PK_Flashcards PRIMARY KEY (FlashcardId),

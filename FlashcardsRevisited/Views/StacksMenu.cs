@@ -179,6 +179,6 @@ internal class StacksMenu
         if (listOfStacks.Count == 0)
             Console.WriteLine("No stacks found.");
         else
-            TableVisualisation.ShowTable(listOfStacks, "Stacks");
+            TableVisualisation.ShowStacks(listOfStacks, "Stacks");
     }
 }

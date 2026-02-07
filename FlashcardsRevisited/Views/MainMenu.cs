@@ -7,11 +7,13 @@ namespace FlashcardsRevisited.Views
         private readonly StackController _stackController;
 
         private readonly StacksMenu _stacksMenu;
+        private readonly FlashcardsMenu _flashcardsMenu;
 
         public MainMenu()
         {
             _stackController = new StackController();
             _stacksMenu = new StacksMenu(_stackController);
+            _flashcardsMenu = new FlashcardsMenu(_stackController);
         }
 
         internal void StartingMenu()
@@ -36,9 +38,9 @@ namespace FlashcardsRevisited.Views
                     case "s":
                         _stacksMenu.MainMenu();
                         break;
-                    //case "f":
-                    //    FlashcardsMenu();
-                    //    break;
+                    case "f":
+                        _flashcardsMenu.MainMenu();
+                        break;
                     //case "x":
                     //    StudyAreaMenu();
                     //    break;
