@@ -5,15 +5,19 @@ namespace FlashcardsRevisited.Views
     internal class MainMenu
     {
         private readonly StackController _stackController;
+        private readonly FlashcardController _flashcardController;
 
         private readonly StacksMenu _stacksMenu;
         private readonly FlashcardsMenu _flashcardsMenu;
+        private readonly StudyAreaMenu _studyAreaMenu;
 
         public MainMenu()
         {
+            _flashcardController = new FlashcardController();
             _stackController = new StackController();
             _stacksMenu = new StacksMenu(_stackController);
             _flashcardsMenu = new FlashcardsMenu(_stackController);
+            _studyAreaMenu = new StudyAreaMenu(_stackController, _flashcardController);
         }
 
         internal void StartingMenu()
@@ -41,9 +45,9 @@ namespace FlashcardsRevisited.Views
                     case "f":
                         _flashcardsMenu.MainMenu();
                         break;
-                    //case "x":
-                    //    StudyAreaMenu();
-                    //    break;
+                    case "x":
+                        _studyAreaMenu.MainMenu();
+                        break;
                     case "0":
                         closeApp = true;
                         Environment.Exit(0);

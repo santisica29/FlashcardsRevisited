@@ -4,5 +4,5 @@ internal class StudySession
     public int StudySessionId { get; set; }
     public int StackId { get; set; }
     public int Score { get; set; }
-    public DateTime Date { get; set; }
+    public DateTime DateOfSession { get; set; }
 }
