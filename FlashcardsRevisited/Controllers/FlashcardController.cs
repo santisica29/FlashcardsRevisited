@@ -18,8 +18,6 @@ internal class FlashcardController
 
         var list = connection.Query<Flashcard>(sql).ToList();
 
-        if (list.Count == 0) return null;
-
         var dtoList = new List<FlashcardDTO>();
 
         foreach (var item in list)
@@ -45,9 +43,9 @@ internal class FlashcardController
 
         var list = connection.Query<Flashcard>(sql, new {StackId = stackId}).ToList();
 
-        if (list.Count == 0) return null;
-
         var dtoList = new List<FlashcardDTO>();
+
+        int id = 1;
 
         foreach (var item in list)
         {
@@ -55,6 +53,7 @@ internal class FlashcardController
                 new FlashcardDTO
                 {
                     FlashcardId = item.FlashcardId,
+                    DTOId = id++,
                     Front = item.Front,
                     Back = item.Back,
                 });
@@ -69,7 +68,7 @@ internal class FlashcardController
 
         connection.Open();
 
-        var sql = "SELECTION * FROM Flashcards WHERE FlashcardId = @FlashcardId";
+        var sql = "SELECT * FROM Flashcards WHERE FlashcardId = @FlashcardId";
 
         return connection.QuerySingleOrDefault<Flashcard>(sql, new { FlashcardId = id });
     }
@@ -108,7 +107,7 @@ internal class FlashcardController
         using var connection = new SqlConnection(connectionString);
         connection.Open();
 
-        var sql = @"UPDATE FROM Flashcards 
+        var sql = @"UPDATE Flashcards 
                     SET Front = @Front, Back = @Back
                     WHERE FlashcardId = @FlashcardId";
 

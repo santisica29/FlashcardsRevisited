@@ -59,12 +59,96 @@ internal class FlashcardsMenu
 
     private void ProcessDeleteFlashcard()
     {
-        throw new NotImplementedException();
+        var list = ProcessViewFlashcards();
+
+        Console.WriteLine("Select the Id of the flashcard you want to delete.");
+        string id = Console.ReadLine().Trim().ToLower();
+
+        int idAsInt = Convert.ToInt32(id);
+        int idToDelete = 0;
+
+        foreach (var item in list)
+        {
+            if (item.DTOId == idAsInt)
+                idToDelete = item.FlashcardId;
+        }
+
+        var affectedRows = _flashcardController.Delete(idToDelete);
+
+        if (affectedRows > 0)
+            Console.WriteLine($"Flashcard with id {idToDelete} was deleted.");
+        else
+            Console.WriteLine("Couldn't delete flashcard");
     }
 
     private void ProcessUpdateFlashcard()
     {
-        throw new NotImplementedException();
+        var list = ProcessViewFlashcards();
+
+        Console.WriteLine("Select the Id of the flashcard you want to update.");
+        string id = Console.ReadLine().Trim().ToLower();
+
+        int idAsInt = Convert.ToInt32(id);
+        int idToUpdate = 0;
+
+        foreach (var item in list)
+        {
+            if (item.DTOId == idAsInt)
+                idToUpdate = item.FlashcardId;
+        }
+
+        var flashcardToUpdate = _flashcardController.GetById(idToUpdate);
+
+        if (flashcardToUpdate == null)
+        {
+            Console.WriteLine("No flashcard found with that id");
+            Console.ReadKey();
+            return;
+        }
+
+        bool updating = true;
+
+        while (updating)
+        {
+            Console.WriteLine("Choose which area you want to update:");
+            Console.WriteLine("-------------------------------------");
+            Console.WriteLine("1 - Front");
+            Console.WriteLine("2 - Back");
+            Console.WriteLine("3 - Stop updating");
+            Console.WriteLine("0 - Go back");
+
+            string userInput = Console.ReadLine().Trim().ToLower();
+
+            switch (userInput)
+            {
+                case "1":
+                    Console.WriteLine("Enter new front:");
+                    string newFront = Console.ReadLine();
+
+                    flashcardToUpdate.Front = newFront;
+                    break;
+                case "2":
+                    Console.WriteLine("Enter new back:");
+                    string newBack = Console.ReadLine();
+
+                    flashcardToUpdate.Back = newBack;
+                    break;
+                case "3":
+                    updating = false;
+                    break;
+                case "0":
+                    updating = false;
+                    MainMenu();
+                    return;
+            }
+        }
+
+        var affectedRows = _flashcardController.Update(flashcardToUpdate);
+
+        if (affectedRows > 0)
+            Console.WriteLine($"Flashcard with id {idToUpdate} was updated.");
+        else
+            Console.WriteLine("Couldn't update flashcard");
     }
 
     internal void ProcessCreateFlashcard()
@@ -90,21 +174,23 @@ internal class FlashcardsMenu
             Console.WriteLine("Couldn't create the flashcard.");
     }
 
-    internal void ProcessViewFlashcards()
+    internal List<FlashcardDTO> ProcessViewFlashcards()
     {
         var list = _flashcardController.GetFlashcardsFromStack(_currentStack.StackId);
 
-        if (list == null)
+        if (list.Count == 0)
             Console.WriteLine($"No Flashcards found in {_currentStack.StackName} stack.");
         else
             TableVisualisation.ShowFlashcards(list, $"{_currentStack.StackName} Flashcards");
+
+        return list;
     }
 
     internal StackDeck? ChooseCurrentStack()
     {
         var listOfStacks = _stackController.GetAll();
 
-        if (listOfStacks == null)
+        if (listOfStacks.Count == 0)
         {
             Console.WriteLine("No stacks found.");
             return null;
