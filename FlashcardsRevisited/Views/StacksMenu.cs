@@ -51,18 +51,15 @@ internal class StacksMenu
     {
         ProcessViewStacks();
 
-        Console.WriteLine("Type the ID of the Stack you want to delete");
-        string idSelected = Console.ReadLine().Trim().ToLower();
+        Console.WriteLine("Type the name of the Stack you want to delete");
+        string nameSelected = Console.ReadLine().Trim().ToLower();
 
-        int id = Convert.ToInt32(idSelected);
-
-        StackDeck? stackToDelete = _stackController.GetById(id);
+        StackDeck? stackToDelete = _stackController.GetByName(nameSelected);
 
         if (stackToDelete == null)
         {
-            Console.WriteLine("No Stack found with that id.");
+            Console.WriteLine($"No Stack found called {nameSelected}.");
             Console.ReadKey();
-            ProcessDeleteStack();
             return;
         }
 
@@ -90,18 +87,15 @@ internal class StacksMenu
     {
         ProcessViewStacks();
 
-        Console.WriteLine("Type the ID of the Stack you want to update");
-        string idSelected = Console.ReadLine().Trim().ToLower();
+        Console.WriteLine("Type the name of the Stack you want to update");
+        string nameSelected = Console.ReadLine().Trim().ToLower();
 
-        int id = int.Parse(idSelected);
-
-        StackDeck? stackToUpdate = _stackController.GetById(id);
+        StackDeck? stackToUpdate = _stackController.GetByName(nameSelected);
 
         if (stackToUpdate == null)
         {
-            Console.WriteLine("No Stack found with that id. Try Again");
+            Console.WriteLine("No Stack found with that name. Try Again");
             Console.ReadKey();
-            ProcessUpdateStack();
             return;
         }
 
@@ -142,7 +136,7 @@ internal class StacksMenu
         int rowsAffected = _stackController.Update(stackToUpdate);
 
         if (rowsAffected > 0)
-            Console.WriteLine($"Stack with Id of {stackToUpdate.StackId} and name of {stackToUpdate.StackName} was updated.");
+            Console.WriteLine($"Stack with the name of {stackToUpdate.StackName} was updated.");
         else
             Console.WriteLine("Couldn't update the stack.");
     }
@@ -164,9 +158,9 @@ internal class StacksMenu
             CreatedDate = DateTime.Now,
         };
 
-        int affectedRows = _stackController.Add(newStack);
+        int rowsAffected = _stackController.Add(newStack);
 
-        if (affectedRows > 0)
+        if (rowsAffected > 0)
             Console.WriteLine("New Stack created!");
         else
             Console.WriteLine("Couldn't create the stack");

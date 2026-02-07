@@ -9,8 +9,15 @@ internal class TableVisualisation
     {
         Console.WriteLine("\n\n");
 
+        var rows = tableData.Select(s => new List<object>
+        {
+            s.StackName,
+            s.Description,
+        }).ToList();
+
         ConsoleTableBuilder
-            .From(tableData)
+            .From(rows)
+            .AddColumn("Name", "Description")
             .WithTitle(title, ConsoleColor.DarkGreen)
             .ExportAndWriteLine();
 
