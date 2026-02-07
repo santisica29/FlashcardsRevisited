@@ -41,5 +41,23 @@ internal class DatabaseManager
             END";
 
         connection.Execute(sqlFlashcards);
+
+        var sqlStudySession = @"IF OBJECT_ID('dbo.StudyArea', 'U') IS NULL
+            BEGIN
+                CREATE TABLE StudyArea (
+                    StudySessionId INT IDENTITY NOT NULL,
+                    Score INT NOT NULL,
+                    DateOfSession DATE NOT NULL,
+                    StackId INT NOT NULL,
+
+                    CONSTRAINT PK_StudyArea PRIMARY KEY (StudySessionId)
+                    CONSTRAINT FK_StudyArea_StackId FOREIGN KEY (StackId)
+                        REFERENCES Stacks(StackId)
+                        ON DELETE CASCADE
+                    );
+            END";
+
+        connection.Execute(sqlStudySession);
+
     }
 }
