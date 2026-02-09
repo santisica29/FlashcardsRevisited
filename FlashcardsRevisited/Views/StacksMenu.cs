@@ -119,7 +119,7 @@ internal class StacksMenu
                     stackToUpdate.StackName = newName;
                     break;
                 case "2":
-                    Console.WriteLine("Type the new name:");
+                    Console.WriteLine("Type the new description:");
                     string newDescription = Console.ReadLine();
                     stackToUpdate.Description = newDescription;
                     break;

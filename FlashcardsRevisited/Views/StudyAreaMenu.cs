@@ -68,9 +68,11 @@ internal class StudyAreaMenu
                 Console.WriteLine("Incorrect answer.");
             }
 
-            Console.WriteLine($"Final score {score} pts");
             Console.ReadKey();
         }
+
+        Console.WriteLine($"Final score {score}/{flashcardList.Count} pts");
+        Console.ReadKey();
 
         StudySession newSession = new()
         {
