@@ -43,4 +43,6 @@ internal class TableVisualisation
 
         Console.WriteLine("\n\n");
     }
+
+
 }

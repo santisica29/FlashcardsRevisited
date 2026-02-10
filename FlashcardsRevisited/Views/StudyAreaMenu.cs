@@ -16,15 +16,17 @@ internal class StudyAreaMenu
     }
     internal void MainMenu()
     {
-        _currentStack = ChooseCurrentStack();
-
         bool closeApp = false;
+
         while (!closeApp)
         {
             Console.WriteLine("Study Area");
             Console.WriteLine("0 - Go back");
             Console.WriteLine("1 - Start study session");
-            Console.WriteLine("2 - View study sessions with this stack");
+            Console.WriteLine("2 - View study sessions in a stack");
+            Console.WriteLine("3 - View all study sessions");
+            Console.WriteLine("4 - Change current stack");
+
             string userChoice = Console.ReadLine().Trim().ToLower();
 
             switch (userChoice)
@@ -33,13 +35,28 @@ internal class StudyAreaMenu
                     closeApp = true;
                     break;
                 case "1":
+                    if (_currentStack == null)
+                        _currentStack = ChooseCurrentStack();
                     ProcessStartStudySession();
                     break;
                 case "2":
-                    ProcessViewStudySessions();
+                    if (_currentStack == null)
+                        _currentStack = ChooseCurrentStack();
+                    ProcessViewStudySessionsInStack();
+                    break;
+                case "3":
+                    ProcessViewAllStudySessions();
+                    break;
+                case "4":
+                    _currentStack = ChooseCurrentStack();
                     break;
             }
         }  
+    }
+
+    private void ProcessViewAllStudySessions()
+    {
+        throw new NotImplementedException();
     }
 
     internal void ProcessStartStudySession()
@@ -89,9 +106,17 @@ internal class StudyAreaMenu
             Console.WriteLine("Couldn't saved study session");
     }
 
-    internal void ProcessViewStudySessions()
+    internal void ProcessViewStudySessionsInStack()
     {
-        throw new NotImplementedException();
+        var flashcardList = _flashcardController.GetFlashcardsFromStack(_currentStack.StackId);
+
+        if (flashcardList.Count == 0)
+        {
+            Console.WriteLine("No flashcards found in this stack");
+            return;
+        }
+
+        TableVisualisation.ShowFlashcards(flashcardList, $"Flashcards in {_currentStack.StackName}");
     }
 
     internal StackDeck? ChooseCurrentStack()
