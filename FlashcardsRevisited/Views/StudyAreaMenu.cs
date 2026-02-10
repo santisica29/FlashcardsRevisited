@@ -40,8 +40,8 @@ internal class StudyAreaMenu
                     ProcessStartStudySession();
                     break;
                 case "2":
-                    if (_currentStack == null)
-                        _currentStack = ChooseCurrentStack();
+                    //if (left) is null, assign (right)
+                    _currentStack ??= ChooseCurrentStack();
                     ProcessViewStudySessionsInStack();
                     break;
                 case "3":
