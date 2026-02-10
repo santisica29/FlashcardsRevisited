@@ -49,11 +49,12 @@ internal class DatabaseManager
                     Score INT NOT NULL,
                     DateOfSession DATE NOT NULL,
                     StackId INT NOT NULL,
+                    StackName VARCHAR(25) NOT NULL,
 
                     CONSTRAINT PK_StudyArea PRIMARY KEY (StudySessionId),
                     CONSTRAINT FK_StudyArea_StackId FOREIGN KEY (StackId)
                         REFERENCES Stacks(StackId)
-                        ON DELETE CASCADE
+                        ON DELETE CASCADE,
                     );
             END";
 

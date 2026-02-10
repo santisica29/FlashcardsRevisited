@@ -14,13 +14,24 @@ internal class StudySessionController
 
         connection.Open();
 
-        var sql = @"INSERT INTO StudyArea (Score, DateOfSession, StackId) VALUES (@Score, @DateOfSession, @StackId)";
+        var sql = @"INSERT INTO StudyArea (Score, DateOfSession, StackId, StackName) VALUES (@Score, @DateOfSession, @StackId, @StackName);";
 
         return connection.Execute(sql, new
         {
             Score = session.Score,
             DateOfSession = session.DateOfSession,
-            StackId = session.StackId,
+            StackId = session.Stack.StackId,
+            StackName = session.Stack.StackName,
         });
+    }
+
+    internal List<StudySession> GetAll()
+    {
+        using var connection = new SqlConnection(connectionString);
+        connection.Open();
+
+        var sql = "SELECT * FROM StudyArea;";
+
+        return connection.Query<StudySession>(sql).ToList();
     }
 }

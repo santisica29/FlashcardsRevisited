@@ -1,8 +1,8 @@
 ﻿namespace FlashcardsRevisited.Models;
-internal class StudySession
+internal class StudySessionDTO
 {
     public int StudySessionId { get; set; }
-    public int Score { get; set; }
+    public string StackName { get; set; }
     public DateTime DateOfSession { get; set; }
-    public StackDeck Stack { get; set; }
+    public int Score { get; set; }
 }

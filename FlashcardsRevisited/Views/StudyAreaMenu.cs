@@ -1,5 +1,6 @@
 ﻿using FlashcardsRevisited.Controllers;
 using FlashcardsRevisited.Models;
+using System.Threading.Channels;
 
 namespace FlashcardsRevisited.Views;
 internal class StudyAreaMenu
@@ -35,8 +36,7 @@ internal class StudyAreaMenu
                     closeApp = true;
                     break;
                 case "1":
-                    if (_currentStack == null)
-                        _currentStack = ChooseCurrentStack();
+                    _currentStack ??= ChooseCurrentStack();
                     ProcessStartStudySession();
                     break;
                 case "2":
@@ -48,20 +48,25 @@ internal class StudyAreaMenu
                     ProcessViewAllStudySessions();
                     break;
                 case "4":
+                    Console.WriteLine($"Current stack: {_currentStack.StackName}");
                     _currentStack = ChooseCurrentStack();
                     break;
             }
-        }  
+        }
     }
 
     private void ProcessViewAllStudySessions()
     {
-        throw new NotImplementedException();
+        List<StudySession> list = _studySessionController.GetAll();
+
+        if (list == null)
+            Console.WriteLine("No study sessions.");
+        else
+            TableVisualisation.ShowStudySessions(list, "Study Sessions");
     }
 
     internal void ProcessStartStudySession()
     {
-        int score = 0;
         var flashcardList = _flashcardController.GetFlashcardsFromStack(_currentStack.StackId);
 
         if (flashcardList.Count == 0)
@@ -69,6 +74,8 @@ internal class StudyAreaMenu
             Console.WriteLine("No flashcards found in this stack");
             return;
         }
+
+        int score = 0;
 
         foreach (var flashcard in flashcardList)
         {
@@ -93,9 +100,9 @@ internal class StudyAreaMenu
 
         StudySession newSession = new()
         {
-            StackId = _currentStack.StackId,
             Score = score,
             DateOfSession = DateTime.Now,
+            Stack = _currentStack,
         };
 
         var affectedRows = _studySessionController.Add(newSession);
@@ -128,17 +135,23 @@ internal class StudyAreaMenu
             Console.WriteLine("No stacks found.");
             return null;
         }
-        else
+
+        TableVisualisation.ShowStacks(listOfStacks);
+
+        StackDeck? currStack = null;
+
+        while (currStack == null)
         {
-            TableVisualisation.ShowStacks(listOfStacks);
+            Console.WriteLine("Type the name of the Stack you want:");
+
+            string stackName = Console.ReadLine().Trim().ToLower();
+
+            currStack = _stackController.GetByName(stackName);
+
+            if (currStack == null)
+                Console.WriteLine("Stack not found. Try again.");
         }
 
-        Console.WriteLine("Type the name of the Stack you want:");
-
-        string stackName = Console.ReadLine().Trim().ToLower();
-
-        StackDeck? currentStack = _stackController.GetByName(stackName);
-
-        return currentStack;
+        return currStack;
     }
 }

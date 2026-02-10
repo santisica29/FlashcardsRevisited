@@ -44,5 +44,24 @@ internal class TableVisualisation
         Console.WriteLine("\n\n");
     }
 
+    internal static void ShowStudySessions(List<StudySession> tableData, string title)
+    {
+        Console.WriteLine("\n\n");
 
+        var rows = tableData.Select(ss => new List<object>
+        {
+            ss.StudySessionId,
+            ss.Stack.StackName,
+            ss.DateOfSession,
+            ss.Score,
+        }).ToList();
+
+        ConsoleTableBuilder
+            .From(rows)
+            .AddColumn("Id", "Stack Name", "Date", "Score")
+            .WithTitle(title, ConsoleColor.DarkGreen)
+            .ExportAndWriteLine();
+
+        Console.WriteLine("\n\n");
+    }
 }
