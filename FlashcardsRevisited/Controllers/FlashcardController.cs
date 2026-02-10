@@ -34,32 +34,27 @@ internal class FlashcardController
         return dtoList;
     }
 
-    internal List<FlashcardDTO>? GetFlashcardsFromStack(int stackId)
+    internal List<FlashcardDTO> GetFlashcardsFromStack(int stackId)
     {
         using var connection = new SqlConnection(connectionString);
-        connection.Open();
 
-        var sql = "SELECT * FROM Flashcards WHERE StackId = @StackId";
+        var sql = @"SELECT 
+                        f.FlashcardId,
+                        f.Front,
+                        f.Back
+                        FROM Flashcards f 
+                    WHERE f.StackId = @StackId";
 
-        var list = connection.Query<Flashcard>(sql, new {StackId = stackId}).ToList();
-
-        var dtoList = new List<FlashcardDTO>();
+        var list = connection.Query<FlashcardDTO>(sql, new {StackId = stackId}).ToList();
 
         int id = 1;
 
         foreach (var item in list)
         {
-            dtoList.Add(
-                new FlashcardDTO
-                {
-                    FlashcardId = item.FlashcardId,
-                    DTOId = id++,
-                    Front = item.Front,
-                    Back = item.Back,
-                });
+            item.DTOId = id++;
         }
 
-        return dtoList;
+        return list;
     }
 
     internal Flashcard? GetById(int id)
