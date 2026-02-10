@@ -14,24 +14,37 @@ internal class StudySessionController
 
         connection.Open();
 
-        var sql = @"INSERT INTO StudyArea (Score, DateOfSession, StackId, StackName) VALUES (@Score, @DateOfSession, @StackId, @StackName);";
+        var sql = @"INSERT INTO StudyArea (Score, DateOfSession, StackId) VALUES (@Score, @DateOfSession, @StackId);";
 
         return connection.Execute(sql, new
         {
             Score = session.Score,
             DateOfSession = session.DateOfSession,
             StackId = session.Stack.StackId,
-            StackName = session.Stack.StackName,
         });
     }
 
-    internal List<StudySession> GetAll()
+    internal List<StudySessionDTO> GetAll()
     {
         using var connection = new SqlConnection(connectionString);
         connection.Open();
 
-        var sql = "SELECT * FROM StudyArea;";
+        var sql = @"SELECT 
+                        StudyArea.StudySessionId,
+                        StudyArea.Score,
+                        StudyArea.DateOfSession,
+                        st.StackName 
+                    FROM StudyArea
+                    JOIN Stacks st ON StudyArea.StackId = st.StackId
+                    ORDER BY StudyArea.DateOfSession DESC;";
 
-        return connection.Query<StudySession>(sql).ToList();
+        var list = connection.Query<StudySessionDTO>(sql).ToList();
+
+        return list;
+    }
+
+    internal List<FlashcardDTO> GetSessionsFromStack(int stackId)
+    {
+        throw new NotImplementedException();
     }
 }

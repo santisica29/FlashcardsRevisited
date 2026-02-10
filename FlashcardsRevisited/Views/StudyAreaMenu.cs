@@ -57,7 +57,7 @@ internal class StudyAreaMenu
 
     private void ProcessViewAllStudySessions()
     {
-        List<StudySession> list = _studySessionController.GetAll();
+        List<StudySessionDTO> list = _studySessionController.GetAll();
 
         if (list == null)
             Console.WriteLine("No study sessions.");
@@ -115,15 +115,15 @@ internal class StudyAreaMenu
 
     internal void ProcessViewStudySessionsInStack()
     {
-        var flashcardList = _flashcardController.GetFlashcardsFromStack(_currentStack.StackId);
+        var sessions = _studySessionController.GetSessionsFromStack(_currentStack.StackId);
 
-        if (flashcardList.Count == 0)
+        if (sessions.Count == 0)
         {
-            Console.WriteLine("No flashcards found in this stack");
+            Console.WriteLine("No sessions found in this stack");
             return;
         }
 
-        TableVisualisation.ShowFlashcards(flashcardList, $"Flashcards in {_currentStack.StackName}");
+        TableVisualisation.ShowFlashcards(sessions, $"{_currentStack.StackName} sessions");
     }
 
     internal StackDeck? ChooseCurrentStack()
