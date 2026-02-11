@@ -41,6 +41,8 @@ internal class FlashcardsMenu
             Console.WriteLine("2 - Create a Flashcard in current stack");
             Console.WriteLine("3 - Edit");
             Console.WriteLine("4 - Delete");
+            Console.WriteLine("5 - View total number of flashcards in stack");
+            Console.WriteLine("6 - To change the current stack");
             Console.WriteLine("0 - Go Back");
 
             string userInput = Console.ReadLine().Trim().ToLower();
@@ -59,12 +61,26 @@ internal class FlashcardsMenu
                 case "4":
                     ProcessDeleteFlashcard();
                     break;
+                case "5":
+                    ProcessViewTotalNumberOfFlashcardsInStack();
+                    break;
+                case "6":
+                    DisplayMessage($"Current stack: {_currentStack.StackName}");
+                    _currentStack = ChooseCurrentStack();
+                    break;
                 case "0":
                     return;
             }
             
             Console.ReadKey();
         }
+    }
+
+    private void ProcessViewTotalNumberOfFlashcardsInStack()
+    {
+        int total = _flashcardController.GetTotalNumberOfFlashcardsInStack(_currentStack.StackId);
+
+        DisplayMessage($"Total number of stacks in flashcards: {total}");
     }
 
     private void ProcessDeleteFlashcard()

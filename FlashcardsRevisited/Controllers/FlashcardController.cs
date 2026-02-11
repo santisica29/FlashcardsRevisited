@@ -12,8 +12,6 @@ internal class FlashcardController
     {
         using var connection = new SqlConnection(connectionString);
 
-        connection.Open();
-
         var sql = "SELECTION * FROM Flashcards";
 
         var list = connection.Query<Flashcard>(sql).ToList();
@@ -61,8 +59,6 @@ internal class FlashcardController
     {
         using var connection = new SqlConnection(connectionString);
 
-        connection.Open();
-
         var sql = "SELECT * FROM Flashcards WHERE FlashcardId = @FlashcardId";
 
         return connection.QuerySingleOrDefault<Flashcard>(sql, new { FlashcardId = id });
@@ -71,8 +67,6 @@ internal class FlashcardController
     internal int Add(Flashcard flashcard)
     {
         using var connection = new SqlConnection(connectionString);
-
-        connection.Open();
 
         var sql = "INSERT INTO Flashcards (Front, Back, StackId) VALUES (@Front, @Back, @StackId)";
 
@@ -87,7 +81,6 @@ internal class FlashcardController
     internal int Delete(int id)
     {
         using var connection = new SqlConnection(connectionString);
-        connection.Open();
 
         var sql = "DELETE FROM Flashcards WHERE FlashcardId = @DeleteId";
 
@@ -100,11 +93,10 @@ internal class FlashcardController
     internal int Update(Flashcard newFlashcard)
     {
         using var connection = new SqlConnection(connectionString);
-        connection.Open();
 
         var sql = @"UPDATE Flashcards 
                     SET Front = @Front, Back = @Back
-                    WHERE FlashcardId = @FlashcardId";
+                    WHERE FlashcardId = @FlashcardId;";
 
         return connection.Execute(sql, new
         {
@@ -112,5 +104,16 @@ internal class FlashcardController
             Back = newFlashcard.Back,
             FlashcardId = newFlashcard.FlashcardId,
         });
+    }
+
+    internal int GetTotalNumberOfFlashcardsInStack(int stackId)
+    {
+        using var connection = new SqlConnection(connectionString);
+
+        var sql = "SELECT COUNT(*) FROM Flashcards WHERE StackId = @StackId;";
+
+        var count = connection.ExecuteScalar(sql, new {StackId = stackId});
+
+        return Convert.ToInt32(count);
     }
 }

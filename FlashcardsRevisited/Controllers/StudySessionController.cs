@@ -12,8 +12,6 @@ internal class StudySessionController
     {
         using var connection = new SqlConnection(connectionString);
 
-        connection.Open();
-
         var sql = @"INSERT INTO StudyArea (Score, DateOfSession, StackId) VALUES (@Score, @DateOfSession, @StackId);";
 
         return connection.Execute(sql, new
@@ -27,7 +25,6 @@ internal class StudySessionController
     internal List<StudySessionDTO> GetAll()
     {
         using var connection = new SqlConnection(connectionString);
-        connection.Open();
 
         var sql = @"SELECT 
                         StudyArea.StudySessionId,
