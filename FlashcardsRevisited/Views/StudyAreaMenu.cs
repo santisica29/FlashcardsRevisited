@@ -135,12 +135,9 @@ internal class StudyAreaMenu
         var sessions = _studySessionController.GetSessionsFromStack(_currentStack.StackId);
 
         if (sessions.Count == 0)
-        {
             DisplayMessage("No sessions found in this stack", "red");
-            return;
-        }
-
-        TableVisualisation.ShowFlashcards(sessions, $"{_currentStack.StackName} sessions");
+        else
+            TableVisualisation.ShowStudySessions(sessions, $"{_currentStack.StackName} sessions");
     }
 
     internal StackDeck? ChooseCurrentStack()

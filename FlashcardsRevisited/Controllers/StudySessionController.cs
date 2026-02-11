@@ -43,8 +43,20 @@ internal class StudySessionController
         return list;
     }
 
-    internal List<FlashcardDTO> GetSessionsFromStack(int stackId)
+    internal List<StudySessionDTO> GetSessionsFromStack(int stackId)
     {
-        throw new NotImplementedException();
+        using var connection = new SqlConnection(connectionString);
+
+        var sql = @"SELECT 
+                        StudyArea.StudySessionId,
+                        StudyArea.Score,
+                        StudyArea.DateOfSession,
+                        st.StackName 
+                    FROM StudyArea
+                    JOIN Stacks st ON StudyArea.StackId = st.StackId
+                    WHERE StudyArea.StackId = @StackId
+                    ORDER BY StudyArea.DateOfSession DESC;";
+
+        return connection.Query<StudySessionDTO>(sql, new { StackId = stackId }).ToList();
     }
 }
