@@ -1,7 +1,7 @@
-# Flashcard Project
-Console app to study by building flashcards.
+﻿# Flashcard Project
+Console application to learn by using flashcards.
 
-Develop using C#, SQL Server to store data (with Dapper as ORM) and Spectre.Console for the user interface.
+Built with **C#**, **SQL Server** + **Dapper**, **Spectre.Console** for clean, colorful menus and ConsoleTableExt for tables.
 
 ## Requirements
 
@@ -9,7 +9,7 @@ Develop using C#, SQL Server to store data (with Dapper as ORM) and Spectre.Cons
 
 - You'll need two different tables for stacks and flashcards. The tables should be linked by a foreign key.
 
-- Stacks should have an unique name.
+- Stacks should have a unique name.
 
 - Every flashcard needs to be part of a stack. If a stack is deleted, the same should happen with the flashcard.
 
@@ -22,6 +22,17 @@ Develop using C#, SQL Server to store data (with Dapper as ORM) and Spectre.Cons
 - The study and stack tables should be linked. If a stack is deleted, it's study sessions should be deleted.
 
 - The project should contain a call to the study table so the users can see all their study sessions. This table receives insert calls upon each study session, but there shouldn't be update and delete calls to it.
+
+## Tech Stack
+
+| Component          | Choice                  | Why |
+|--------------------|-------------------------|-----|
+| Language           | C# / .NET               | Modern, fast, great tooling |
+| Database           | SQL Server              | Production-grade, great for learning proper relational DBs |
+| ORM                | Dapper                  | Lightweight, fast, no magic |
+| UI library         | Spectre.Console         | Beautiful menus and colors |
+| Table rendering    | ConsoleTableExt         | Simple & readable static tables |
+| Project style      | Clean architecture-ish  | Separation of concerns, DTOs |
 
 ## Features
 
@@ -42,13 +53,24 @@ Develop using C#, SQL Server to store data (with Dapper as ORM) and Spectre.Cons
 - Reporting and other data output uses ConsoleTableExt library to output in a more pleasant way.
 
 ## Challenges
+## Challenges & Lessons Learned
 
-- Work with linked tables and reference them correctly.
-- Using DTOs correctly to present the user the information in a safer way.
-- Going from SQLite to SQL Server and the differences in between them.
-- Create multiple menus for different areas while keeping everything organize.
-- Using join to access data from another table.
-- Validating the inputs so the app doesn't crash
+This project pushed me in several directions I hadn't fully explored before:
+
+- **Mastering relational integrity in SQL Server**  
+  Properly setting up foreign keys with `ON DELETE CASCADE` so stacks, flashcards, and study sessions stay in sync when deleted.
+
+- **DTOs for clean presentation vs internal models**  
+  Using separate DTOs to hide internal IDs (especially StackId) from the user interface. This forced better separation between domain logic and what the user actually sees — no more leaking database concerns into the UI.
+
+- **Switching from SQLite to full SQL Server**  
+  Dealing with differences in data types, connection handling, case sensitivity (or lack thereof), and schema creation scripts. Made me appreciate why people say "SQLite for dev, real DB for prod/learning".
+
+- **Building maintainable multi-level menus**  
+  Creating intuitive navigation (Main → Stacks → Flashcards → Study Area) without turning the code into spaghetti.
+
+- **Robust input validation & error handling**  
+  Making sure the app doesn't crash on empty input, invalid numbers, duplicate stack names, or SQL constraint violations. Added custom validators + friendly error messages.
 
 ## Resources
 

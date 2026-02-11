@@ -1,5 +1,6 @@
 ﻿using FlashcardsRevisited.Controllers;
 using FlashcardsRevisited.Models;
+using Microsoft.IdentityModel.Tokens;
 using Spectre.Console;
 using static FlashcardsRevisited.Helpers.UserInterface;
 
@@ -150,7 +151,13 @@ internal class StacksMenu
     {
         DisplayMessage("Create a new stack.");
         DisplayMessage("------------------");
+
         string nameInput = GetStringInput("Name (mandatory):");
+
+        while (nameInput.IsNullOrEmpty())
+        {
+            nameInput = GetStringInput("Name (mandatory):");
+        }
 
         string descriptionInput = GetStringInput("Description (optional):");
 
