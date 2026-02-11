@@ -86,8 +86,7 @@ internal class StudyAreaMenu
 
         foreach (var flashcard in flashcardList)
         {
-            Console.WriteLine($"{flashcard.Front}:");
-            string answer = Console.ReadLine().Trim().ToLower();
+            string answer = GetStringInput($"{flashcard.Front}:");
 
             if (answer == flashcard.Back)
             {
@@ -96,7 +95,7 @@ internal class StudyAreaMenu
             }
             else
             {
-                DisplayMessage("Incorrect answer", "darkred");
+                DisplayMessage($"Incorrect answer. The correct answer was: {flashcard.Back}", "red");
 
             }
 
@@ -156,9 +155,7 @@ internal class StudyAreaMenu
 
         while (currStack == null)
         {
-            DisplayMessage("Type the name of the Stack you want:", "yellow");
-
-            string stackName = Console.ReadLine().Trim().ToLower();
+            string stackName = GetStringInput("Type the name of the Stack you want:", "yellow");
 
             currStack = _stackController.GetByName(stackName);
 

@@ -48,8 +48,19 @@ internal class TableVisualisation
     {
         Console.WriteLine("\n\n");
 
+        int id = 1;
+
+        var rows = tableData.Select(ss => new List<object>
+        {
+            id++,
+            ss.StackName,
+            ss.DateOfSession.ToString("dd-MM-yyyy"),
+            ss.Score,
+        }).ToList();
+
         ConsoleTableBuilder
-            .From(tableData)
+            .From(rows)
+            .AddColumn("Id", "Stack Name", "Date", "Score")
             .WithTitle(title, ConsoleColor.DarkGreen)
             .ExportAndWriteLine();
 

@@ -29,7 +29,7 @@ internal class StacksMenu
             Console.WriteLine("4 - Delete");
             Console.WriteLine("0 - Go Back");
 
-            string userInput = Console.ReadLine().Trim().ToLower();
+            string userInput = GetStringInput("Enter your choice");
 
             switch (userInput)
             {
@@ -57,8 +57,7 @@ internal class StacksMenu
     {
         ProcessViewStacks();
 
-        Console.WriteLine("Type the name of the Stack you want to delete");
-        string nameSelected = Console.ReadLine().Trim().ToLower();
+        string nameSelected = GetStringInput("Type the name of the Stack you want to delete");
 
         StackDeck? stackToDelete = _stackController.GetByName(nameSelected);
 
@@ -90,8 +89,7 @@ internal class StacksMenu
     {
         ProcessViewStacks();
 
-        DisplayMessage("Type the name of the Stack you want to update");
-        string nameSelected = Console.ReadLine().Trim().ToLower();
+        string nameSelected = GetStringInput("Type the name of the Stack you want to update");
 
         StackDeck? stackToUpdate = _stackController.GetByName(nameSelected);
 
@@ -122,23 +120,21 @@ internal class StacksMenu
             switch (cmd)
             {
                 case "1":
-                    Console.WriteLine("Type the new name:");
-                    string newName = Console.ReadLine();
+                    string newName = GetStringInput("Enter a new name");
                     stackToUpdate.StackName = newName;
                     break;
                 case "2":
-                    Console.WriteLine("Type the new description:");
-                    string newDescription = Console.ReadLine();
+                    string newDescription = GetStringInput("Enter a new description");
                     stackToUpdate.Description = newDescription;
                     break;
                 case "s":
                     updating = false;
                     break;
                 case "0":
-                    updating = false;
                     MainMenu();
                     return;    
             }
+
             Console.ReadKey();
         }
 
@@ -152,13 +148,11 @@ internal class StacksMenu
 
     private void ProcessCreateStack()
     {
-        Console.WriteLine("Create a new stack.");
-        Console.WriteLine("------------------");
-        Console.WriteLine("Name (mandatory):");
-        string nameInput = Console.ReadLine().Trim().ToLower();
+        DisplayMessage("Create a new stack.");
+        DisplayMessage("------------------");
+        string nameInput = GetStringInput("Name (mandatory):");
 
-        Console.WriteLine("Description (optional):");
-        string descriptionInput = Console.ReadLine().Trim().ToLower();
+        string descriptionInput = GetStringInput("Description (optional):");
 
         StackDeck newStack = new()
         {

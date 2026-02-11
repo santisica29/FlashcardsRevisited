@@ -71,24 +71,13 @@ internal class FlashcardsMenu
     {
         var list = ProcessViewFlashcards();
 
-        Console.WriteLine("Select the Id of the flashcard you want to delete.");
-        string id = Console.ReadLine().Trim().ToLower();
-
-        int idAsInt;
-
-        while (!int.TryParse(id, out idAsInt))
-        {
-            DisplayMessage("Invalid input. You must enter a number. Try again", "red");
-
-            Console.WriteLine("Select the Id of the flashcard you want to delete.");
-            id = Console.ReadLine().Trim().ToLower();
-        }
+        int id = GetIntegerInput("Select the Id of the flashcard you want to delete.", "brown");
         
         int idToDelete = 0;
 
         foreach (var item in list)
         {
-            if (item.DTOId == idAsInt)
+            if (item.DTOId == id)
                 idToDelete = item.FlashcardId;
         }
 
@@ -104,24 +93,13 @@ internal class FlashcardsMenu
     {
         var list = ProcessViewFlashcards();
 
-        DisplayMessage("Select the Id of the flashcard you want to update.");
-        string id = Console.ReadLine().Trim().ToLower();
-
-        int idAsInt;
-
-        while (!int.TryParse(id, out idAsInt))
-        {
-            DisplayMessage("Invalid input. You must enter a number. Try again", "red");
-
-            Console.WriteLine("Select the Id of the flashcard you want to delete.");
-            id = Console.ReadLine().Trim().ToLower();
-        }
+        int id = GetIntegerInput("Select the Id of the flashcard you want to update.", "pink");
 
         int idToUpdate = 0;
 
         foreach (var item in list)
         {
-            if (item.DTOId == idAsInt)
+            if (item.DTOId == id)
                 idToUpdate = item.FlashcardId;
         }
 
@@ -149,19 +127,17 @@ internal class FlashcardsMenu
             Console.WriteLine("3 - Stop updating");
             Console.WriteLine("0 - Go back");
 
-            string userInput = Console.ReadLine().Trim().ToLower();
+            string userInput = GetStringInput("Enter your choice:");
 
             switch (userInput)
             {
                 case "1":
-                    Console.WriteLine("Enter new front:");
-                    string newFront = Console.ReadLine();
+                    string newFront = GetStringInput("Enter new front:");
 
                     flashcardToUpdate.Front = newFront;
                     break;
                 case "2":
-                    Console.WriteLine("Enter new back:");
-                    string newBack = Console.ReadLine();
+                    string newBack = GetStringInput("Enter new back:");
 
                     flashcardToUpdate.Back = newBack;
                     break;
@@ -169,7 +145,6 @@ internal class FlashcardsMenu
                     updating = false;
                     break;
                 case "0":
-                    updating = false;
                     MainMenu();
                     return;
             }
@@ -185,11 +160,9 @@ internal class FlashcardsMenu
 
     internal void ProcessCreateFlashcard()
     {
-        Console.WriteLine("Choose the front:");
-        string front = Console.ReadLine().Trim().ToLower();
+        string front = GetStringInput("Choose the front:");
 
-        Console.WriteLine("Choose the back:");
-        string back = Console.ReadLine().Trim().ToLower();
+        string back = GetStringInput("Choose the back:");
 
         Flashcard newFlashcard = new()
         {
@@ -232,9 +205,7 @@ internal class FlashcardsMenu
             TableVisualisation.ShowStacks(listOfStacks);
         }
 
-        Console.WriteLine("Type the name of the Stack you want for your flashcards:");
-
-        string stackName = Console.ReadLine().Trim().ToLower();
+        string stackName = GetStringInput("Type the name of the Stack you want for your flashcards:");
 
         StackDeck? currentStack = _stackController.GetByName(stackName);
 
