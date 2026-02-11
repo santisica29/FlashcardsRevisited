@@ -18,6 +18,8 @@ internal class StacksMenu
 
         while (!closeStackMenu)
         {
+            Console.Clear();
+
             Console.WriteLine("Stacks Menu.");
             Console.WriteLine("1 - View All");
             Console.WriteLine("2 - Create");
@@ -44,6 +46,8 @@ internal class StacksMenu
                 case "0":
                     return;
             }
+
+            Console.ReadKey();
         }
     }
 
@@ -72,15 +76,13 @@ internal class StacksMenu
             Console.ReadKey();
             return;
         }
-        
+
         int rowsAffected = _stackController.Delete(stackToDelete.StackId);
 
         if (rowsAffected > 0)
             Console.WriteLine("Stack deleted");
         else
             Console.WriteLine("Couldn't delete the Stack");
-
-        Console.ReadKey();
     }
 
     private void ProcessUpdateStack()

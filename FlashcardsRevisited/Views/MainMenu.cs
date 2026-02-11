@@ -26,6 +26,8 @@ namespace FlashcardsRevisited.Views
 
             while (!closeApp)
             {
+                Console.Clear();
+
                 Console.WriteLine("Main Menu.");
                 Console.WriteLine("-----------");
                 Console.WriteLine("Manage Stacks (press s)");

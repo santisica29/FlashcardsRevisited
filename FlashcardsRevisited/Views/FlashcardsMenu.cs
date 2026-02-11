@@ -15,11 +15,16 @@ internal class FlashcardsMenu
     }
     internal void MainMenu()
     {
+        Console.Clear();
+
         _currentStack = ChooseCurrentStack();
 
-        if (_currentStack == null)
+        while (_currentStack == null)
         {
             Console.WriteLine("Invalid input");
+            Console.ReadKey();
+
+            MainMenu();
             return;
         }
 
@@ -27,7 +32,9 @@ internal class FlashcardsMenu
 
         while (!closeFlashcardMenu)
         {
-            Console.WriteLine($"Current Stack: {_currentStack.StackName}");
+            Console.Clear();
+
+            Console.WriteLine($"Current Stack: {_currentStack.StackName}\n");
             Console.WriteLine("Flashcards Menu.");
             Console.WriteLine("1 - View all Flashcards in stack");
             Console.WriteLine("2 - Create a Flashcard in current stack");
@@ -54,6 +61,8 @@ internal class FlashcardsMenu
                 case "0":
                     return;
             }
+            
+            Console.ReadKey();
         }
     }
 
@@ -200,7 +209,7 @@ internal class FlashcardsMenu
             TableVisualisation.ShowStacks(listOfStacks);
         }
 
-        Console.WriteLine("Type the name of the Stack you want:");
+        Console.WriteLine("Type the name of the Stack you want for your flashcards:");
 
         string stackName = Console.ReadLine().Trim().ToLower();
 

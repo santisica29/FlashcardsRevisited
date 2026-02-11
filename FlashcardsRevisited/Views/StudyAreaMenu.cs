@@ -1,14 +1,15 @@
 ﻿using FlashcardsRevisited.Controllers;
 using FlashcardsRevisited.Models;
-using System.Threading.Channels;
+using Spectre.Console;
+using static FlashcardsRevisited.Helpers.UserInterface;
 
 namespace FlashcardsRevisited.Views;
 internal class StudyAreaMenu
 {
-    StudySessionController _studySessionController;
-    StackController _stackController;
-    FlashcardController _flashcardController;
-    StackDeck? _currentStack;
+    private readonly StudySessionController _studySessionController;
+    private readonly StackController _stackController;
+    private readonly FlashcardController _flashcardController;
+    private StackDeck? _currentStack;
     public StudyAreaMenu(StackController stackController, FlashcardController flashcardController)
     {
         _stackController = stackController;
@@ -21,6 +22,8 @@ internal class StudyAreaMenu
 
         while (!closeApp)
         {
+            Console.Clear();
+
             Console.WriteLine("Study Area");
             Console.WriteLine("0 - Go back");
             Console.WriteLine("1 - Start study session");
@@ -37,21 +40,25 @@ internal class StudyAreaMenu
                     break;
                 case "1":
                     _currentStack ??= ChooseCurrentStack();
+                    Console.WriteLine($"Current stack: {_currentStack.StackName}\n");
                     ProcessStartStudySession();
                     break;
                 case "2":
                     //if (left) is null, assign (right)
                     _currentStack ??= ChooseCurrentStack();
+                    Console.WriteLine($"Current stack: {_currentStack.StackName}\n");
                     ProcessViewStudySessionsInStack();
                     break;
                 case "3":
                     ProcessViewAllStudySessions();
                     break;
                 case "4":
-                    Console.WriteLine($"Current stack: {_currentStack.StackName}");
+                    Console.WriteLine($"Current stack: {_currentStack.StackName}\n");
                     _currentStack = ChooseCurrentStack();
                     break;
             }
+
+            Console.ReadKey();
         }
     }
 
@@ -85,18 +92,28 @@ internal class StudyAreaMenu
             if (answer == flashcard.Back)
             {
                 score++;
-                Console.WriteLine("Correct answer!");
+                DisplayMessage("Correct answer", "green");
             }
             else
             {
-                Console.WriteLine("Incorrect answer.");
+                DisplayMessage("Incorrect answer", "darkred");
+
             }
 
             Console.ReadKey();
         }
 
-        Console.WriteLine($"Final score {score}/{flashcardList.Count} pts");
+        DisplayMessage($"Final score {score}/{flashcardList.Count} pts");
         Console.ReadKey();
+
+        var saveSession = AnsiConsole.Confirm("Do you want to save this session?");
+
+        if (!saveSession)
+        {
+            AnsiConsole.MarkupLine("The session won't be saved. Press any key.");
+            Console.ReadKey();
+            return;
+        }
 
         StudySession newSession = new()
         {
