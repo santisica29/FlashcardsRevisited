@@ -1,5 +1,6 @@
 ﻿using FlashcardsRevisited.Controllers;
 using FlashcardsRevisited.Models;
+using static FlashcardsRevisited.Helpers.UserInterface;
 
 namespace FlashcardsRevisited.Views;
 internal class FlashcardsMenu
@@ -73,7 +74,16 @@ internal class FlashcardsMenu
         Console.WriteLine("Select the Id of the flashcard you want to delete.");
         string id = Console.ReadLine().Trim().ToLower();
 
-        int idAsInt = Convert.ToInt32(id);
+        int idAsInt;
+
+        while (!int.TryParse(id, out idAsInt))
+        {
+            DisplayMessage("Invalid input. You must enter a number. Try again", "red");
+
+            Console.WriteLine("Select the Id of the flashcard you want to delete.");
+            id = Console.ReadLine().Trim().ToLower();
+        }
+        
         int idToDelete = 0;
 
         foreach (var item in list)
@@ -85,19 +95,28 @@ internal class FlashcardsMenu
         var affectedRows = _flashcardController.Delete(idToDelete);
 
         if (affectedRows > 0)
-            Console.WriteLine($"Flashcard with id {idToDelete} was deleted.");
+            DisplayMessage($"Flashcard with id {idToDelete} was deleted.", "green");
         else
-            Console.WriteLine("Couldn't delete flashcard");
+            DisplayMessage("Couldn't delete flashcard", "red");
     }
 
     private void ProcessUpdateFlashcard()
     {
         var list = ProcessViewFlashcards();
 
-        Console.WriteLine("Select the Id of the flashcard you want to update.");
+        DisplayMessage("Select the Id of the flashcard you want to update.");
         string id = Console.ReadLine().Trim().ToLower();
 
-        int idAsInt = Convert.ToInt32(id);
+        int idAsInt;
+
+        while (!int.TryParse(id, out idAsInt))
+        {
+            DisplayMessage("Invalid input. You must enter a number. Try again", "red");
+
+            Console.WriteLine("Select the Id of the flashcard you want to delete.");
+            id = Console.ReadLine().Trim().ToLower();
+        }
+
         int idToUpdate = 0;
 
         foreach (var item in list)
@@ -110,8 +129,11 @@ internal class FlashcardsMenu
 
         if (flashcardToUpdate == null)
         {
-            Console.WriteLine("No flashcard found with that id");
+            DisplayMessage("No flashcard found with that id", "red");
             Console.ReadKey();
+
+            Console.Clear();
+            ProcessUpdateFlashcard();
             return;
         }
 
@@ -120,6 +142,7 @@ internal class FlashcardsMenu
         while (updating)
         {
             Console.WriteLine("Choose which area you want to update:");
+            Console.WriteLine($"Current front: {flashcardToUpdate.Front} - Current back: {flashcardToUpdate.Back}");
             Console.WriteLine("-------------------------------------");
             Console.WriteLine("1 - Front");
             Console.WriteLine("2 - Back");
@@ -155,9 +178,9 @@ internal class FlashcardsMenu
         var affectedRows = _flashcardController.Update(flashcardToUpdate);
 
         if (affectedRows > 0)
-            Console.WriteLine($"Flashcard with id {idToUpdate} was updated.");
+            DisplayMessage($"Flashcard with id {idToUpdate} was updated.", "green");
         else
-            Console.WriteLine("Couldn't update flashcard");
+            DisplayMessage("Couldn't update flashcard", "red");
     }
 
     internal void ProcessCreateFlashcard()
@@ -178,9 +201,9 @@ internal class FlashcardsMenu
         var rowsAffected = _flashcardController.Add(newFlashcard);
 
         if (rowsAffected > 0)
-            Console.WriteLine("Flashcard created!");
+            DisplayMessage("Flashcard created!", "green");
         else
-            Console.WriteLine("Couldn't create the flashcard.");
+            DisplayMessage("Couldn't create the flashcard.", "red");
     }
 
     internal List<FlashcardDTO> ProcessViewFlashcards()
@@ -188,7 +211,7 @@ internal class FlashcardsMenu
         var list = _flashcardController.GetFlashcardsFromStack(_currentStack.StackId);
 
         if (list.Count == 0)
-            Console.WriteLine($"No Flashcards found in {_currentStack.StackName} stack.");
+            DisplayMessage($"No Flashcards found in {_currentStack.StackName} stack.", "red");
         else
             TableVisualisation.ShowFlashcards(list, $"{_currentStack.StackName} Flashcards");
 
@@ -201,7 +224,7 @@ internal class FlashcardsMenu
 
         if (listOfStacks.Count == 0)
         {
-            Console.WriteLine("No stacks found.");
+            DisplayMessage("No stacks found.", "red");
             return null;
         }
         else

@@ -67,7 +67,7 @@ internal class StudyAreaMenu
         List<StudySessionDTO> list = _studySessionController.GetAll();
 
         if (list == null)
-            Console.WriteLine("No study sessions.");
+            DisplayMessage("No study sessions.", "red");
         else
             TableVisualisation.ShowStudySessions(list, "Study Sessions");
     }
@@ -78,7 +78,7 @@ internal class StudyAreaMenu
 
         if (flashcardList.Count == 0)
         {
-            Console.WriteLine("No flashcards found in this stack");
+            DisplayMessage("No flashcards found in this stack", "red");
             return;
         }
 
@@ -110,7 +110,7 @@ internal class StudyAreaMenu
 
         if (!saveSession)
         {
-            AnsiConsole.MarkupLine("The session won't be saved. Press any key.");
+            DisplayMessage("The session won't be saved. Press any key.", "orange");
             Console.ReadKey();
             return;
         }
@@ -125,9 +125,9 @@ internal class StudyAreaMenu
         var affectedRows = _studySessionController.Add(newSession);
 
         if (affectedRows > 0)
-            Console.WriteLine("Study session added correctly!");
+            DisplayMessage("Study session added correctly!", "green");
         else
-            Console.WriteLine("Couldn't saved study session");
+            DisplayMessage("Couldn't saved study session", "red");
     }
 
     internal void ProcessViewStudySessionsInStack()
@@ -136,7 +136,7 @@ internal class StudyAreaMenu
 
         if (sessions.Count == 0)
         {
-            Console.WriteLine("No sessions found in this stack");
+            DisplayMessage("No sessions found in this stack", "red");
             return;
         }
 
@@ -149,7 +149,7 @@ internal class StudyAreaMenu
 
         if (listOfStacks.Count == 0)
         {
-            Console.WriteLine("No stacks found.");
+            DisplayMessage("No stacks found.", "red");
             return null;
         }
 
@@ -159,14 +159,14 @@ internal class StudyAreaMenu
 
         while (currStack == null)
         {
-            Console.WriteLine("Type the name of the Stack you want:");
+            DisplayMessage("Type the name of the Stack you want:", "yellow");
 
             string stackName = Console.ReadLine().Trim().ToLower();
 
             currStack = _stackController.GetByName(stackName);
 
             if (currStack == null)
-                Console.WriteLine("Stack not found. Try again.");
+                DisplayMessage("Stack not found. Try again.", "red");
         }
 
         return currStack;

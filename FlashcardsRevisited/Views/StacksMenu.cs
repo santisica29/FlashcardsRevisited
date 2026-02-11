@@ -1,5 +1,7 @@
 ﻿using FlashcardsRevisited.Controllers;
 using FlashcardsRevisited.Models;
+using Spectre.Console;
+using static FlashcardsRevisited.Helpers.UserInterface;
 
 namespace FlashcardsRevisited.Views;
 
@@ -62,17 +64,16 @@ internal class StacksMenu
 
         if (stackToDelete == null)
         {
-            Console.WriteLine($"No Stack found called {nameSelected}.");
+            DisplayMessage($"No Stack found called {nameSelected}.", "red");
             Console.ReadKey();
             return;
         }
 
-        Console.WriteLine($"Are you sure you want to delete {stackToDelete.StackName}? (y/n)");
-        string confirmationInput = Console.ReadLine().Trim().ToLower();
+        bool confirmationInput = AnsiConsole.Confirm($"Are you sure you want to delete {stackToDelete.StackName}?");
 
-        if (confirmationInput != "y")
+        if (!confirmationInput)
         {
-            Console.WriteLine("Deletion canceled.");
+            DisplayMessage("Deletion canceled.");
             Console.ReadKey();
             return;
         }
@@ -80,24 +81,27 @@ internal class StacksMenu
         int rowsAffected = _stackController.Delete(stackToDelete.StackId);
 
         if (rowsAffected > 0)
-            Console.WriteLine("Stack deleted");
+            DisplayMessage("Stack deleted", "green");
         else
-            Console.WriteLine("Couldn't delete the Stack");
+            DisplayMessage("Couldn't delete the Stack", "red");
     }
 
     private void ProcessUpdateStack()
     {
         ProcessViewStacks();
 
-        Console.WriteLine("Type the name of the Stack you want to update");
+        DisplayMessage("Type the name of the Stack you want to update");
         string nameSelected = Console.ReadLine().Trim().ToLower();
 
         StackDeck? stackToUpdate = _stackController.GetByName(nameSelected);
 
         if (stackToUpdate == null)
         {
-            Console.WriteLine("No Stack found with that name. Try Again");
+            DisplayMessage("No Stack found with that name. Try Again", "red");
             Console.ReadKey();
+
+            Console.Clear();
+            ProcessUpdateStack();
             return;
         }
 
@@ -105,6 +109,8 @@ internal class StacksMenu
 
         while (updating)
         {
+            Console.Clear();
+
             Console.WriteLine("Select which part you want to update.");
             Console.WriteLine("Press 1 to update the name");
             Console.WriteLine("Press 2 to update the description");
@@ -131,16 +137,17 @@ internal class StacksMenu
                 case "0":
                     updating = false;
                     MainMenu();
-                    return;
+                    return;    
             }
+            Console.ReadKey();
         }
 
         int rowsAffected = _stackController.Update(stackToUpdate);
 
         if (rowsAffected > 0)
-            Console.WriteLine($"Stack with the name of {stackToUpdate.StackName} was updated.");
+            DisplayMessage($"Stack with the name of {stackToUpdate.StackName} was updated.", "green");
         else
-            Console.WriteLine("Couldn't update the stack.");
+            DisplayMessage("Couldn't update the stack.", "red");
     }
 
     private void ProcessCreateStack()
@@ -163,9 +170,9 @@ internal class StacksMenu
         int rowsAffected = _stackController.Add(newStack);
 
         if (rowsAffected > 0)
-            Console.WriteLine("New Stack created!");
+            DisplayMessage("New Stack created!", "green");
         else
-            Console.WriteLine("Couldn't create the stack");
+            DisplayMessage("Couldn't create the stack", "red");
     }
 
     private void ProcessViewStacks()
@@ -173,7 +180,7 @@ internal class StacksMenu
         var listOfStacks = _stackController.GetAll();
 
         if (listOfStacks.Count == 0)
-            Console.WriteLine("No stacks found.");
+            DisplayMessage("No stacks found.", "red");
         else
             TableVisualisation.ShowStacks(listOfStacks, "Stacks");
     }
