@@ -52,7 +52,6 @@ Built with **C#**, **SQL Server** + **Dapper**, **Spectre.Console** for clean, c
 
 - Reporting and other data output uses ConsoleTableExt library to output in a more pleasant way.
 
-## Challenges
 ## Challenges & Lessons Learned
 
 This project pushed me in several directions I hadn't fully explored before:
