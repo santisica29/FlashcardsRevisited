@@ -1,7 +1,7 @@
 ﻿# Flashcard Project
 Console application to learn by using flashcards.
 
-Built with **C#**, **SQL Server** + **Dapper**, **Spectre.Console** for clean, colorful menus and ConsoleTableExt for tables.
+Built with **C#**, **SQL Server** + **Dapper**, **Spectre.Console** for clean, colorful menus and **ConsoleTableExt** for tables.
 
 ## Requirements
 
